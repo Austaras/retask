@@ -1,0 +1,20 @@
+{
+  "name": "retask",
+  "version": "0.1.0",
+  "description": "elm task but for rescript",
+  "main": "ReTask.bs.js",
+  "repository": "https://www.test.com",
+  "author": "austaras",
+  "license": "MIT",
+  "scripts": {
+    "build": "bsb -make-world",
+    "clean": "bsb -clean-world",
+    "watch": "bsb -make-world -w"
+  },
+  "dependencies": {
+    "reason-react": "^0.9.1"
+  },
+  "devDependencies": {
+    "bs-platform": "^8.2.0"
+  }
+}
