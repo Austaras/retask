@@ -2,63 +2,51 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
-
-function none(param) {
-  return [];
-}
-
-function map(fn, msg) {
-  return /* Cmd */{
-          _0: Curry._1(fn, msg._0)
-        };
-}
-
-var Cmd = {
-  none: none,
-  map: map
-};
-
-function none$1(param) {
-  return [];
-}
-
-function map$1(fn, msg) {
-  return /* Sub */{
-          _0: Curry._1(fn, msg._0)
-        };
-}
-
-var Sub = {
-  none: none$1,
-  map: map$1
-};
+import * as Util$Retask from "./util.bs.js";
 
 function useReducerT(config) {
-  var update = config.update;
-  var update$1 = React.useCallback((function (state) {
-          return function (action) {
-            return Curry._2(update, state[0], action);
+  var cancel = React.useRef({
+        queue: {},
+        id: 0
+      });
+  var partial_arg = config.update;
+  var match = React.useReducer(Curry.__2(partial_arg), config.init);
+  var res = match[0];
+  var cmd = res[1];
+  var dispatch = match[1];
+  React.useEffect((function () {
+          var makeRegister = function (param) {
+            var id = String(cancel.current.id);
+            cancel.current.id = cancel.current.id + 1 | 0;
+            return [
+                    (function (action) {
+                        dispatch(action);
+                        return Util$Retask.Dict.$$delete(cancel.current.queue, id);
+                      }),
+                    (function (cb) {
+                        cancel.current.queue[id] = cb;
+                        
+                      })
+                  ];
           };
-        }), [update]);
-  React.useEffect((function () {
-          console.log(123);
+          cmd(makeRegister);
           
-        }), [config.sub]);
-  var match = React.useReducer(Curry.__2(update$1), config.init);
-  var match$1 = match[0];
+        }), [res]);
   React.useEffect((function () {
-          console.log(123);
-          
-        }), [match$1[1]]);
+          return (function (param) {
+                    Object.values(cancel.current.queue).forEach(function (f) {
+                          return Curry._1(f, undefined);
+                        });
+                    
+                  });
+        }), []);
   return [
-          match$1[0],
-          match[1]
+          res[0],
+          dispatch
         ];
 }
 
 export {
-  Cmd ,
-  Sub ,
   useReducerT ,
   
 }

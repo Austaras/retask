@@ -1,6 +1,7 @@
 {
   "name": "retask",
   "version": "0.1.0",
+  "namespace": true,
   "sources": {
     "dir" : "src",
     "subdirs" : true
@@ -11,6 +12,7 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
+    "bs-webapi",
     "reason-react"
   ],
   "warnings": {

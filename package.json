@@ -1,9 +1,9 @@
 {
-  "name": "retask",
+  "name": "@wicke/retask",
   "version": "0.1.0",
   "description": "elm task but for rescript",
   "main": "ReTask.bs.js",
-  "repository": "https://www.test.com",
+  "repository": "https://github.com/Austaras/retask",
   "author": "austaras",
   "license": "MIT",
   "scripts": {
@@ -12,9 +12,15 @@
     "watch": "bsb -make-world -w"
   },
   "dependencies": {
+    "bs-webapi": "^0.19.1",
     "reason-react": "^0.9.1"
   },
   "devDependencies": {
-    "bs-platform": "^8.2.0"
+    "bs-platform": "^8.2.0",
+    "jest": "^26.4.2",
+    "react-dom": "^16.13.1"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
   }
 }
