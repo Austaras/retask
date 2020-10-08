@@ -1,11 +1,9 @@
-open Util;
-
 type send('msg) = (. 'msg) => unit;
 
 type t = (. unit) => unit;
 
 type reg('msg) = ((send('msg), unit) => unit) => unit;
-let register: reg('msg) = _ => any_cast();
+let register: reg('msg) = _ => ();
 
 [@warning "-27"]
 let setReg: reg('msg) => unit = make => [%raw {js|register = make|js}];

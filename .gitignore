@@ -5,3 +5,4 @@ node_modules
 .vscode
 .merlin
 .bsb.lock
+*.bs.js
