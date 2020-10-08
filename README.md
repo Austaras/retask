@@ -6,5 +6,10 @@ The intention of this package is to port said system to rescript so you can writ
 
 Effect Manager:
 
-- [ ] Time
-- [ ] Http
+- [ ] Task composition
+- [x] Time
+- [ ] Ajax
+- [ ] WebSocket
+- [ ] Dom Event
+
+### How to write your own effect manager

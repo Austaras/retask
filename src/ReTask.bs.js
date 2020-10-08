@@ -2,52 +2,114 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Caml_array from "bs-platform/lib/es6/caml_array.js";
+import * as Cmd$Retask from "./cmd.bs.js";
+import * as Sub$Retask from "./sub.bs.js";
 import * as Util$Retask from "./util.bs.js";
 
 function useReducerT(config) {
+  var sub = config.sub;
   var cancel = React.useRef({
-        queue: {},
+        cmdQueue: {},
+        subQueue: [],
         id: 0
       });
   var partial_arg = config.update;
   var match = React.useReducer(Curry.__2(partial_arg), config.init);
   var res = match[0];
   var cmd = res[1];
+  var state = res[0];
   var dispatch = match[1];
   React.useEffect((function () {
-          var makeRegister = function (param) {
-            var id = String(cancel.current.id);
-            cancel.current.id = cancel.current.id + 1 | 0;
-            return [
-                    (function (action) {
-                        dispatch(action);
-                        return Util$Retask.Dict.$$delete(cancel.current.queue, id);
-                      }),
-                    (function (cb) {
-                        cancel.current.queue[id] = cb;
-                        
-                      })
-                  ];
-          };
-          cmd(makeRegister);
+          Cmd$Retask.setReg(function (task) {
+                var id = String(cancel.current.id);
+                cancel.current.id = cancel.current.id + 1 | 0;
+                var dispatch$1 = function (action) {
+                  dispatch(action);
+                  return Util$Retask.Dict.$$delete(cancel.current.cmdQueue, id);
+                };
+                var cb = Curry._1(task, dispatch$1);
+                cancel.current.cmdQueue[id] = cb;
+                
+              });
+          cmd();
           
         }), [res]);
   React.useEffect((function () {
+          var count = {
+            contents: 0
+          };
+          var queue = cancel.current.subQueue;
+          Sub$Retask.setReg(function (inst) {
+                var id = count.contents;
+                count.contents = count.contents + 1 | 0;
+                var dispatch$1 = function (payload) {
+                  var msg = Curry._1(Caml_array.caml_array_get(queue, id).tagger, payload);
+                  return dispatch(msg);
+                };
+                var old = Belt_Array.get(queue, id);
+                if (old !== undefined) {
+                  if (Sub$Retask.sameSub(inst.kind, inst.param, old.kind, old.param)) {
+                    old.tagger = inst.tagger;
+                    return ;
+                  }
+                  Curry._1(old.cancel, undefined);
+                  var cancel = Curry._1(inst.task, dispatch$1);
+                  return Caml_array.caml_array_set(queue, id, {
+                              kind: inst.kind,
+                              cancel: cancel,
+                              tagger: inst.tagger,
+                              param: inst.param
+                            });
+                }
+                var cancel$1 = Curry._1(inst.task, dispatch$1);
+                return Caml_array.caml_array_set(queue, id, {
+                            kind: inst.kind,
+                            cancel: cancel$1,
+                            tagger: inst.tagger,
+                            param: inst.param
+                          });
+              });
+          Curry._1(sub, state)();
+          var count$1 = count.contents;
+          while(queue.length > count$1) {
+            Curry._1(queue.pop().cancel, undefined);
+          };
+          
+        }), [
+        sub,
+        state
+      ]);
+  React.useEffect((function () {
           return (function (param) {
-                    Object.values(cancel.current.queue).forEach(function (f) {
+                    Object.values(cancel.current.cmdQueue).forEach(function (f) {
                           return Curry._1(f, undefined);
+                        });
+                    cancel.current.subQueue.forEach(function (f) {
+                          return Curry._1(f.cancel, undefined);
                         });
                     
                   });
         }), []);
   return [
-          res[0],
+          state,
           dispatch
         ];
 }
 
+function make(param) {
+  var match = useReducerT({
+        init: param.init,
+        update: param.update,
+        sub: param.sub
+      });
+  return Curry._2(param.view, match[0], match[1]);
+}
+
 export {
   useReducerT ,
+  make ,
   
 }
 /* react Not a pure module */

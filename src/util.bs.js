@@ -9,8 +9,11 @@ var Dict = {
   $$delete: $$delete
 };
 
+var JsArray = {};
+
 export {
   Dict ,
+  JsArray ,
   
 }
 /* No side effect */

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "elm task but for rescript",
   "main": "ReTask.bs.js",
-  "repository": "https://github.com/Austaras/retask",
+  "repository": "https://github.com/austaras/retask",
   "author": "austaras",
   "license": "MIT",
   "scripts": {
