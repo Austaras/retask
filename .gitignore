@@ -6,3 +6,6 @@ node_modules
 .merlin
 .bsb.lock
 *.bs.js
+
+dist/*
+!dist/index.js
