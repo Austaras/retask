@@ -1,4 +1,4 @@
-function sameSub(kind, param, oldKind, oldParam) {
+export function sameSub(kind, param, oldKind, oldParam) {
     if (kind !== oldKind) return false
     if (Array.isArray(param) && Array.isArray(oldParam)) {
         if (param.length !== oldParam.length) return false

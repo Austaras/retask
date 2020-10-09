@@ -2,7 +2,7 @@ open Util;
 
 type config('model, 'msg) = {
   init: ('model, Cmd.t),
-  update: ('msg, 'model) => ('model, Cmd.t),
+  update: ('model, 'msg) => ('model, Cmd.t),
   sub: 'model => Sub.t,
 };
 
@@ -22,7 +22,7 @@ type cancel('msg) = {
 let useReducerT = (config: config('model, 'msg)) => {
   let {init, update, sub} = config;
   let cancel = React.useRef({cmdQueue: Js.Dict.empty(), subQueue: [||], id: 0});
-  let (res, dispatch) = React.Uncurried.useReducer(any_cast(update), init);
+  let (res, dispatch) = React.Uncurried.useReducer(((state, _), action) => update(state, action), init);
   let (state, cmd) = res;
 
   // for command
@@ -59,7 +59,7 @@ let useReducerT = (config: config('model, 'msg)) => {
         count := count^ + 1;
         let dispatch =
           (. payload) => {
-            let msg = queue[id].tagger(any_cast(payload));
+            let msg = Js.Array.unsafe_get(queue, id).tagger(any_cast(payload));
             dispatch(. msg);
           };
         let old = Belt.Array.get(queue, id);
@@ -69,11 +69,11 @@ let useReducerT = (config: config('model, 'msg)) => {
           old.cancel();
           let {kind, param, tagger, task} = inst;
           let cancel = task(dispatch);
-          queue[id] = {kind, param, tagger, cancel};
+          Js.Array.unsafe_set(queue, id, {kind, param, tagger, cancel});
         | None =>
           let {kind, param, tagger, task} = inst;
           let cancel = task(dispatch);
-          queue[id] = {kind, param, tagger, cancel};
+          Js.Array.unsafe_set(queue, id, {kind, param, tagger, cancel});
         };
       });
       (sub(state))(.);

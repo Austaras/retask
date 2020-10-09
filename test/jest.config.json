@@ -1,0 +1,7 @@
+{
+    "testMatch": ["**/*.js"],
+    "transform": {
+        "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": ["node_modules/(?!(bs-platform)/)"]
+}

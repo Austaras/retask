@@ -9,18 +9,26 @@
   "scripts": {
     "build": "bsb -make-world",
     "clean": "bsb -clean-world",
-    "watch": "bsb -make-world -w"
+    "watch": "bsb -make-world -w",
+    "test": "jest -c test/jest.config.json"
   },
   "dependencies": {
     "bs-webapi": "^0.19.1",
     "reason-react": "^0.9.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "@testing-library/react-hooks": "^3.4.2",
+    "@types/jest": "^26.0.14",
+    "babel-jest": "^26.5.2",
     "bs-platform": "^8.2.0",
+    "gentype": "^3.36.0",
     "jest": "^26.4.2",
     "react": "^16.13.1",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   },
   "peerDependencies": {
     "react": "^16.13.1"

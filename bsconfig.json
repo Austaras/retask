@@ -1,7 +1,7 @@
 {
   "name": "retask",
   "version": "0.1.0",
-  "namespace": true,
+  "namespace": "re-task",
   "sources": {
     "dir" : "src",
     "subdirs" : true
