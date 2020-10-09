@@ -18,9 +18,15 @@
     "license": "MIT",
     "files": [
         "src",
+        "lib/es6/src",
+        "index.js",
         "bsconfig.json"
     ],
-    "main": "ReTask.bs.js",
+    "main": "index.js",
+    "exports": {
+        ".": "./index.js",
+        "./lib": "./lib/es6/src"
+    },
     "scripts": {
         "build": "bsb -make-world",
         "clean": "bsb -clean-world",
@@ -38,11 +44,9 @@
         "@types/jest": "^26.0.14",
         "babel-jest": "^26.5.2",
         "bs-platform": "^8.2.0",
-        "gentype": "^3.36.0",
         "jest": "^26.4.2",
         "react": "^16.13.1",
         "react-test-renderer": "^16.13.1",
-        "ts-jest": "^26.4.1",
         "typescript": "^4.0.3"
     },
     "peerDependencies": {

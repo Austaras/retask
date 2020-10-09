@@ -1,7 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import { useReducerT } from '../src/ReTask.bs'
-import { none } from '../src/cmd.bs'
-import { every, delay } from '../src/time.bs'
+import { useReducerT } from '../lib/es6/src/ReTask'
+import { none } from '../lib/es6/src/cmd'
+import { batch } from '../lib/es6/src/sub'
+import { every, delay } from '../lib/es6/src/time'
 
 jest.useFakeTimers()
 
@@ -16,6 +17,19 @@ test('sub should work', () => {
 
     act(() => jest.runAllTimers())
     expect(result.current[0]).toBe(10)
+})
+
+test('batch should work', () => {
+    const { result } = renderHook(() =>
+        useReducerT({
+            init: [0, none],
+            update: (state, act) => [state + act, none],
+            sub: _ => batch([every(_ => 1, 10), every(_ => -1, 100)])
+        })
+    )
+
+    act(() => jest.runTimersToTime(150))
+    expect(result.current[0]).toBe(14)
 })
 
 test('tagger should work', () => {

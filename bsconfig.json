@@ -1,22 +1,19 @@
 {
-  "name": "retask",
-  "version": "0.1.0",
-  "namespace": "re-task",
-  "sources": {
-    "dir" : "src",
-    "subdirs" : true
-  },
-  "package-specs": {
-    "module": "es6",
-    "in-source": true
-  },
-  "suffix": ".bs.js",
-  "bs-dependencies": [
-    "bs-webapi",
-    "reason-react"
-  ],
-  "warnings": {
-    "error" : "+101"
-  },
-  "refmt": 3
+    "name": "retask",
+    "version": "0.1.0",
+    "namespace": "re-task",
+    "sources": {
+        "dir": "src",
+        "subdirs": true
+    },
+    "package-specs": {
+        "module": "es6",
+        "in-source": false
+    },
+    "suffix": ".js",
+    "bs-dependencies": ["bs-webapi", "reason-react"],
+    "warnings": {
+        "error": "+101"
+    },
+    "refmt": 3
 }
