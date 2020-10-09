@@ -8,14 +8,15 @@
         "react",
         "hook",
         "elm",
-        "effects"
+        "effects",
+        "rescript"
     ],
     "author": {
         "name": "austaras",
         "email": "austaras@outlook.com"
     },
     "license": "MIT",
-    "files": ["src"],
+    "files": ["src", "bsconfig.json"],
     "main": "ReTask.bs.js",
     "scripts": {
         "build": "bsb -make-world",
