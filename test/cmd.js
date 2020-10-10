@@ -51,6 +51,28 @@ test('batch command could work', () => {
     expect(result.current[0]).toBe(5)
 })
 
+test('command could run concurrently', () => {
+    const { result } = renderHook(() =>
+        useReducerT({
+            init: [0, delay(_ => 0, 10)],
+            update: (state, _) => [state + 1, delay(_ => 0, 10)],
+            sub: _ => noSub
+        })
+    )
+
+    const { result: another } = renderHook(() =>
+        useReducerT({
+            init: [0, delay(_ => 0, 100)],
+            update: (state, _) => [state + 1, none],
+            sub: _ => noSub
+        })
+    )
+
+    act(() => jest.runTimersToTime(100))
+    expect(result.current[0]).toBe(10)
+    expect(another.current[0]).toBe(1)
+})
+
 test('teardown logic could work', () => {
     let update = jest.fn((state, _) => [state + 1, none])
     const { rerender, unmount } = renderHook(() =>

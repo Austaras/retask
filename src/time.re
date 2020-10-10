@@ -9,13 +9,7 @@ let delay = (tagger: unit => 'msg, delay: int): Cmd.t =>
     });
   };
 
-let delayFloat = (tagger: unit => 'msg, delay: float): Cmd.t =>
-  (.) => {
-    Cmd.register(send => {
-      let id = setTimeoutFloat(() => send(. tagger()), delay);
-      () => clearTimeout(id);
-    });
-  };
+[@bs.val] external delayFloat: (unit => 'msg, float) => Cmd.t = "delay";
 
 let nextFrame = (tagger): Cmd.t =>
   (.) => {
@@ -38,11 +32,4 @@ let every = (tagger: unit => 'msg, interval: int): Sub.t =>
     Sub.register({kind: token, param: interval, task, tagger});
   };
 
-let everyFloat = (tagger: unit => 'msg, interval: float): Sub.t =>
-  (.) => {
-    let task = send => {
-      let id = setIntervalFloat(() => send(. unit), interval);
-      () => clearInterval(id);
-    };
-    Sub.register({kind: token, param: interval, task, tagger});
-  };
+[@bs.val] external everyFloat: (unit => 'msg, float) => Sub.t = "every";

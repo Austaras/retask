@@ -60,6 +60,28 @@ test('param should work', () => {
     expect(result.current[0]).toBe(20)
 })
 
+test('should work concurrently', () => {
+    const { result } = renderHook(() =>
+        useReducerT({
+            init: [0, none],
+            update: (state, _) => [state + 1, none],
+            sub: _ => every(_ => 1, 10)
+        })
+    )
+
+    const { result: another } = renderHook(() =>
+        useReducerT({
+            init: [0, none],
+            update: (state, _) => [state + 1, none],
+            sub: _ => every(_ => 1, 100)
+        })
+    )
+
+    act(() => jest.runTimersToTime(100))
+    expect(result.current[0]).toBe(10)
+    expect(another.current[0]).toBe(1)
+})
+
 test('teardown logic should work', () => {
     let update = jest.fn((state, _) => [state + 1, none])
     const { rerender, unmount } = renderHook(() =>
