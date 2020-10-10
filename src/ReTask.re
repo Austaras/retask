@@ -7,15 +7,22 @@ type config('model, 'msg) = {
 };
 
 type subState('msg) = {
+  [@bs.as "0"]
   kind: string,
+  [@bs.as "1"]
   cancel: unit => unit,
+  [@bs.as "2"]
   mutable tagger: unit => 'msg,
+  [@bs.as "3"]
   param: unit,
 };
 
 type cancel('msg) = {
+  [@bs.as "0"]
   cmdQueue: Js.Dict.t(unit => unit),
+  [@bs.as "1"]
   subQueue: array(subState('msg)),
+  [@bs.as "2"]
   mutable id: int,
 };
 

@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 
-import { useReducerT, noCmd, batchCmd, noSub ,delay } from '..'
+import { useReducerT, noCmd, batchCmd, noSub, delay } from '..'
 
 jest.useFakeTimers()
 
 test('simple command could work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => true, 10)],
+            init: [0, delay(10, _ => true)],
             update: (state, act) => [act ? state + 1 : state - 1, noCmd],
             sub: _ => noSub
         })
@@ -21,8 +21,8 @@ test('simple command could work', () => {
 test('recursive command could work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => 0, 10)],
-            update: (state, _) => [state + 1, delay(_ => 0, 10)],
+            init: [0, delay(10, _ => 0)],
+            update: (state, _) => [state + 1, delay(10, _ => 0)],
             sub: _ => noSub
         })
     )
@@ -36,8 +36,8 @@ test('recursive command could work', () => {
 test('batch command could work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => 0, 10)],
-            update: (state, _) => [state + 1, batchCmd([delay(_ => 0, 10), delay(_ => 0, 100)])],
+            init: [0, delay(10, _ => 0)],
+            update: (state, _) => [state + 1, batchCmd([delay(10, _ => 0), delay(100, _ => 0)])],
             sub: _ => noSub
         })
     )
@@ -51,15 +51,15 @@ test('batch command could work', () => {
 test('command could run concurrently', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => 0, 10)],
-            update: (state, _) => [state + 1, delay(_ => 0, 10)],
+            init: [0, delay(10, _ => 0)],
+            update: (state, _) => [state + 1, delay(10, _ => 0)],
             sub: _ => noSub
         })
     )
 
     const { result: another } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => 0, 100)],
+            init: [0, delay(100, _ => 0)],
             update: (state, _) => [state + 1, noCmd],
             sub: _ => noSub
         })
@@ -74,7 +74,7 @@ test('teardown logic could work', () => {
     let update = jest.fn((state, _) => [state + 1, noCmd])
     const { rerender, unmount } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => 0, 10)],
+            init: [0, delay(10, _ => 0)],
             update,
             sub: _ => noSub
         })

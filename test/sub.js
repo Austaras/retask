@@ -9,7 +9,7 @@ test('sub should work', () => {
         useReducerT({
             init: [0, noCmd],
             update: (state, _) => [state + 1, noCmd],
-            sub: model => (model < 10 ? every(_ => 0, 10) : noSub)
+            sub: model => (model < 10 ? every(10, _ => 0) : noSub)
         })
     )
 
@@ -22,7 +22,7 @@ test('batch should work', () => {
         useReducerT({
             init: [0, noCmd],
             update: (state, act) => [state + act, noCmd],
-            sub: _ => batchSub([every(_ => 1, 10), every(_ => -1, 100)])
+            sub: _ => batchSub([every(10, _ => 1), every(100, _ => -1)])
         })
     )
 
@@ -33,9 +33,9 @@ test('batch should work', () => {
 test('tagger should work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => -1, 10)],
+            init: [0, delay(10, _ => -1)],
             update: (state, act) => [state + act, noCmd],
-            sub: model => every(_ => model < 10, 10)
+            sub: model => every(10, _ => model < 10)
         })
     )
 
@@ -48,7 +48,7 @@ test('param should work', () => {
         useReducerT({
             init: [0, noCmd],
             update: (state, _) => [state + 1, noCmd],
-            sub: model => every(_ => 1, model < 10 ? 10 : 100)
+            sub: model => every(model < 10 ? 10 : 100, _ => 1)
         })
     )
 
@@ -63,7 +63,7 @@ test('should work concurrently', () => {
         useReducerT({
             init: [0, noCmd],
             update: (state, _) => [state + 1, noCmd],
-            sub: _ => every(_ => 1, 10)
+            sub: _ => every(10, _ => 1)
         })
     )
 
@@ -71,7 +71,7 @@ test('should work concurrently', () => {
         useReducerT({
             init: [0, noCmd],
             update: (state, _) => [state + 1, noCmd],
-            sub: _ => every(_ => 1, 100)
+            sub: _ => every(100, _ => 1)
         })
     )
 
@@ -86,7 +86,7 @@ test('teardown logic should work', () => {
         useReducerT({
             init: [0, noCmd],
             update,
-            sub: _ => every(_ => 0, 10)
+            sub: _ => every(10, _ => 0)
         })
     )
 

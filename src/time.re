@@ -1,7 +1,7 @@
 open Js.Global;
 open Webapi;
 
-let delay = (tagger: unit => 'msg, delay: int): Cmd.t =>
+let delay = (delay: int, tagger: unit => 'msg): Cmd.t =>
   (.) => {
     Cmd.register(send => {
       let id = setTimeout(() => send(. tagger()), delay);
@@ -9,7 +9,7 @@ let delay = (tagger: unit => 'msg, delay: int): Cmd.t =>
     });
   };
 
-[@bs.val] external delayFloat: (unit => 'msg, float) => Cmd.t = "delay";
+[@bs.val] external delayFloat: (float, unit => 'msg) => Cmd.t = "delay";
 
 let nextFrame = (tagger): Cmd.t =>
   (.) => {
@@ -23,7 +23,7 @@ let token = Sub.getToken(__FILE__);
 
 let unit = ();
 
-let every = (tagger: unit => 'msg, interval: int): Sub.t =>
+let every = (interval: int, tagger: unit => 'msg): Sub.t =>
   (.) => {
     let task = send => {
       let id = setInterval(() => send(. unit), interval);
@@ -32,4 +32,4 @@ let every = (tagger: unit => 'msg, interval: int): Sub.t =>
     Sub.register({kind: token, param: interval, task, tagger});
   };
 
-[@bs.val] external everyFloat: (unit => 'msg, float) => Sub.t = "every";
+[@bs.val] external everyFloat: (float, unit => 'msg) => Sub.t = "every";
