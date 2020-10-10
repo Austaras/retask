@@ -4,6 +4,5 @@
         "^.+\\.[t|j]sx?$": "babel-jest"
     },
     "collectCoverageFrom": ["lib/es6/src/*.js"],
-    "coverageDirectory": "../coverage",
     "transformIgnorePatterns": ["node_modules/(?!(bs-platform)/)"]
 }
