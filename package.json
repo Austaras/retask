@@ -26,7 +26,7 @@
         "build": "bsb -make-world",
         "clean": "bsb -clean-world",
         "watch": "bsb -make-world -w",
-        "test": "jest -c test/jest.config.json"
+        "test": "jest"
     },
     "dependencies": {
         "bs-webapi": "^0.19.1",

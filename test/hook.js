@@ -1,13 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import { useReducerT } from '../lib/es6/src/ReTask'
-import { none } from '../lib/es6/src/cmd'
-import { none as noSub } from '../lib/es6/src/sub'
+
+import { useReducerT, noCmd, noSub } from '..'
 
 test('can be used as a normal useReducer', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, none],
-            update: (state, act) => [act ? state + 1 : state - 1, none],
+            init: [0, noCmd],
+            update: (state, act) => [act ? state + 1 : state - 1, noCmd],
             sub: _ => noSub
         })
     )

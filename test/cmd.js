@@ -1,9 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 
-import { useReducerT } from '../lib/es6/src/ReTask'
-import { none, batch } from '../lib/es6/src/cmd'
-import { none as noSub } from '../lib/es6/src/sub'
-import { delay } from '../lib/es6/src/time'
+import { useReducerT, noCmd, batchCmd, noSub ,delay } from '..'
 
 jest.useFakeTimers()
 
@@ -11,7 +8,7 @@ test('simple command could work', () => {
     const { result } = renderHook(() =>
         useReducerT({
             init: [0, delay(_ => true, 10)],
-            update: (state, act) => [act ? state + 1 : state - 1, none],
+            update: (state, act) => [act ? state + 1 : state - 1, noCmd],
             sub: _ => noSub
         })
     )
@@ -40,7 +37,7 @@ test('batch command could work', () => {
     const { result } = renderHook(() =>
         useReducerT({
             init: [0, delay(_ => 0, 10)],
-            update: (state, _) => [state + 1, batch([delay(_ => 0, 10), delay(_ => 0, 100)])],
+            update: (state, _) => [state + 1, batchCmd([delay(_ => 0, 10), delay(_ => 0, 100)])],
             sub: _ => noSub
         })
     )
@@ -63,7 +60,7 @@ test('command could run concurrently', () => {
     const { result: another } = renderHook(() =>
         useReducerT({
             init: [0, delay(_ => 0, 100)],
-            update: (state, _) => [state + 1, none],
+            update: (state, _) => [state + 1, noCmd],
             sub: _ => noSub
         })
     )
@@ -74,7 +71,7 @@ test('command could run concurrently', () => {
 })
 
 test('teardown logic could work', () => {
-    let update = jest.fn((state, _) => [state + 1, none])
+    let update = jest.fn((state, _) => [state + 1, noCmd])
     const { rerender, unmount } = renderHook(() =>
         useReducerT({
             init: [0, delay(_ => 0, 10)],

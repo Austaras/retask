@@ -1,3 +1,5 @@
+![npm](https://img.shields.io/npm/v/@wicke/retask?style=flat-square)
+
 ### elm task but with rescript
 
 There are sufficient reasons for not using elm, however there isn't a real alternative up until the release of React hook(except Elmish, but it has its own problem), in which `useReducer` alone is powerful enough for mimicing TEA. However there is one really big thing missing which is side effect handling.
@@ -11,5 +13,7 @@ Effect Manager:
 - [ ] Ajax
 - [ ] WebSocket
 - [ ] Dom Event
+
+### quick start
 
 ### How to write your own effect manager

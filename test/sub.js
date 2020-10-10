@@ -1,17 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import { useReducerT } from '../lib/es6/src/ReTask'
-import { none } from '../lib/es6/src/cmd'
-import { batch } from '../lib/es6/src/sub'
-import { every, delay } from '../lib/es6/src/time'
+
+import { useReducerT, noCmd, batchSub, noSub, every, delay } from '..'
 
 jest.useFakeTimers()
 
 test('sub should work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, none],
-            update: (state, _) => [state + 1, none],
-            sub: model => (model < 10 ? every(_ => 0, 10) : none)
+            init: [0, noCmd],
+            update: (state, _) => [state + 1, noCmd],
+            sub: model => (model < 10 ? every(_ => 0, 10) : noSub)
         })
     )
 
@@ -22,9 +20,9 @@ test('sub should work', () => {
 test('batch should work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, none],
-            update: (state, act) => [state + act, none],
-            sub: _ => batch([every(_ => 1, 10), every(_ => -1, 100)])
+            init: [0, noCmd],
+            update: (state, act) => [state + act, noCmd],
+            sub: _ => batchSub([every(_ => 1, 10), every(_ => -1, 100)])
         })
     )
 
@@ -35,8 +33,8 @@ test('batch should work', () => {
 test('tagger should work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, delay(_ => false, 10)],
-            update: (state, act) => [state + +act, none],
+            init: [0, delay(_ => -1, 10)],
+            update: (state, act) => [state + act, noCmd],
             sub: model => every(_ => model < 10, 10)
         })
     )
@@ -48,8 +46,8 @@ test('tagger should work', () => {
 test('param should work', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, none],
-            update: (state, _) => [state + 1, none],
+            init: [0, noCmd],
+            update: (state, _) => [state + 1, noCmd],
             sub: model => every(_ => 1, model < 10 ? 10 : 100)
         })
     )
@@ -63,16 +61,16 @@ test('param should work', () => {
 test('should work concurrently', () => {
     const { result } = renderHook(() =>
         useReducerT({
-            init: [0, none],
-            update: (state, _) => [state + 1, none],
+            init: [0, noCmd],
+            update: (state, _) => [state + 1, noCmd],
             sub: _ => every(_ => 1, 10)
         })
     )
 
     const { result: another } = renderHook(() =>
         useReducerT({
-            init: [0, none],
-            update: (state, _) => [state + 1, none],
+            init: [0, noCmd],
+            update: (state, _) => [state + 1, noCmd],
             sub: _ => every(_ => 1, 100)
         })
     )
@@ -83,10 +81,10 @@ test('should work concurrently', () => {
 })
 
 test('teardown logic should work', () => {
-    let update = jest.fn((state, _) => [state + 1, none])
+    let update = jest.fn((state, _) => [state + 1, noCmd])
     const { rerender, unmount } = renderHook(() =>
         useReducerT({
-            init: [0, none],
+            init: [0, noCmd],
             update,
             sub: _ => every(_ => 0, 10)
         })

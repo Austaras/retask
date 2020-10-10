@@ -7,5 +7,7 @@ node_modules
 .bsb.lock
 *.bs.js
 
+coverage
+
 dist/*
 !dist/index.js
