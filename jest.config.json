@@ -3,6 +3,7 @@
     "transform": {
         "^.+\\.[t|j]sx?$": "babel-jest"
     },
+    "coverageReporters": ["cobertura"],
     "collectCoverageFrom": ["lib/es6/src/*.js"],
     "transformIgnorePatterns": ["node_modules/(?!(bs-platform)/)"]
 }

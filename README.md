@@ -1,4 +1,5 @@
 ![npm](https://img.shields.io/npm/v/@wicke/retask?style=flat-square)
+![Codecov](https://img.shields.io/codecov/c/gh/austaras/retask?style=flat-square)
 
 ### elm task but with rescript
 
