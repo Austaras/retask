@@ -21,6 +21,7 @@
         "lib/es6/src",
         "bsconfig.json"
     ],
+    "sideEffects": false,
     "main": "index.js",
     "scripts": {
         "build": "bsb -make-world",
