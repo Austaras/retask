@@ -1,8 +1,8 @@
 open Webapi;
 
-let record = Js.Dict.empty();
+let%private record = Js.Dict.empty();
 
-let token = Sub.getToken(__FILE__)
+let%private token = Sub.getToken(__FILE__)
 
 let on = (event: string, tagger: Dom.Event.t => 'msg): Sub.t => {
   (.) => {
@@ -16,7 +16,7 @@ let on = (event: string, tagger: Dom.Event.t => 'msg): Sub.t => {
         | None =>
           let listener =
             Listener.make(
-              () => {
+              (.) => {
                 let inst = ev => {
                   open Listener;
                   let {cb} = Js.Dict.unsafeGet(record, event);
@@ -25,7 +25,7 @@ let on = (event: string, tagger: Dom.Event.t => 'msg): Sub.t => {
                 document |> addEventListener(event, inst);
                 inst;
               },
-              inst => document |> removeEventListener(event, inst),
+              (. inst) => document |> removeEventListener(event, inst),
             );
           Js.Dict.set(record, event, listener);
           listener;

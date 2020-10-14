@@ -4,9 +4,9 @@ type t('msg, 'payload) = {
   [@bs.as "1"]
   mutable payload: option('payload),
   [@bs.as "2"]
-  ctor: unit => 'payload,
+  ctor: (. unit) => 'payload,
   [@bs.as "3"]
-  dtor: 'payload => unit,
+  dtor: (. 'payload) => unit,
 };
 
 let make = (ctor, dtor) => {cb: [||], payload: None, ctor, dtor};
@@ -14,7 +14,7 @@ let make = (ctor, dtor) => {cb: [||], payload: None, ctor, dtor};
 let start = (inst: t('msg, 'payload), cb: (. 'msg) => unit) => {
   let _ = Js.Array2.push(inst.cb, cb);
   if (Array.length(inst.cb) === 1) {
-    inst.payload = Some(inst.ctor());
+    inst.payload = Some(inst.ctor(.));
   };
 };
 
@@ -26,7 +26,7 @@ let stop = (inst: t('msg, 'payload), cb: (. 'msg) => unit) => {
   };
   switch (inst.payload) {
   | Some(payload) when Array.length(inst.cb) === 0 =>
-    inst.dtor(payload);
+    inst.dtor(. payload);
     inst.payload = None;
   | _ => ()
   };

@@ -105,6 +105,7 @@ let useReducerT = (config: config('model, 'msg)) => {
   (state, dispatch);
 };
 
+// TODO: make this work
 type compConfig('model, 'msg) = {
   init: ('model, Cmd.t),
   update: ('msg, 'model) => ('model, Cmd.t),
