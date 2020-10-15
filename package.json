@@ -1,6 +1,6 @@
 {
     "name": "@wicke/retask",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "elm task but for rescript",
     "homepage": "https://github.com/austaras/retask",
     "repository": "https://github.com/austaras/retask",
@@ -22,6 +22,9 @@
         "bsconfig.json"
     ],
     "main": "index.js",
+    "exports": {
+        "./lib.": "./lib/es6/src/"
+    },
     "scripts": {
         "build": "bsb -make-world",
         "clean": "bsb -clean-world",

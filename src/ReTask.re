@@ -10,7 +10,7 @@ type subState('msg) = {
   [@bs.as "0"]
   kind: string,
   [@bs.as "1"]
-  cancel: unit => unit,
+  cancel: (. unit) => unit,
   [@bs.as "2"]
   mutable tagger: unit => 'msg,
   [@bs.as "3"]
@@ -19,7 +19,7 @@ type subState('msg) = {
 
 type cancel('msg) = {
   [@bs.as "0"]
-  cmdQueue: Js.Dict.t(unit => unit),
+  cmdQueue: Js.Dict.t(Util.result),
   [@bs.as "1"]
   subQueue: array(subState('msg)),
   [@bs.as "2"]
@@ -35,8 +35,7 @@ let useReducerT = (config: config('model, 'msg)) => {
   // for command
   React.useEffect1(
     () => {
-      open Cmd;
-      setReg(task => {
+      Cmd.setReg(task => {
         let id = cancel.current.id |> string_of_int;
         cancel.current.id = cancel.current.id + 1;
 
@@ -57,8 +56,7 @@ let useReducerT = (config: config('model, 'msg)) => {
   // for subscription
   React.useEffect2(
     () => {
-      [@warning "-45"]
-      open Sub;
+      open! Sub;
       let count = ref(0);
       let queue = cancel.current.subQueue;
       setReg(inst => {
@@ -73,20 +71,20 @@ let useReducerT = (config: config('model, 'msg)) => {
         switch (old) {
         | Some(old) when sameSub(inst.kind, inst.param, old.kind, old.param) => old.tagger = inst.tagger
         | Some(old) =>
-          old.cancel();
+          old.cancel(.);
           let {kind, param, tagger, task} = inst;
-          let cancel = task(dispatch);
+          let Util.{cancel} = task(dispatch);
           Js.Array.unsafe_set(queue, id, {kind, param, tagger, cancel});
         | None =>
           let {kind, param, tagger, task} = inst;
-          let cancel = task(dispatch);
+          let Util.{cancel} = task(dispatch);
           Js.Array.unsafe_set(queue, id, {kind, param, tagger, cancel});
         };
       });
       (sub(state))(.);
       let count = count^;
       while (queue |> Array.length > count) {
-        JsArray.pop(queue).cancel();
+        JsArray.pop(queue).cancel(.);
       };
       None;
     },
@@ -97,8 +95,8 @@ let useReducerT = (config: config('model, 'msg)) => {
   React.useEffect0(() =>
     Some(
       () => {
-        cancel.current.cmdQueue |> Dict.values |> Js.Array.forEach(f => f());
-        cancel.current.subQueue |> Js.Array.forEach(f => f.cancel());
+        cancel.current.cmdQueue |> Dict.values |> Util.(Js.Array.forEach(f => f.cancel(.)));
+        cancel.current.subQueue |> Js.Array.forEach(f => f.cancel(.));
       },
     )
   );

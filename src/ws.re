@@ -25,7 +25,7 @@ let on = (ws: WebSocket.t, tagger: WebSocket.MessageEvent.t => 'msg): Sub.t => {
           listener;
         };
       Listener.start(listener, send);
-      () => Listener.stop(listener, send);
+      Util.{cancel: (.) => Listener.stop(listener, send)};
     };
     Sub.register({kind: token, param: ws, task, tagger});
   };
@@ -67,7 +67,7 @@ let onUrl = (url: string, tagger: WebSocket.MessageEvent.t => 'msg): Sub.t => {
       let listener = makeListener(url);
 
       Listener.start(listener, send);
-      () => Listener.stop(listener, send);
+      Util.{cancel: (.) => Listener.stop(listener, send)};
     };
     Sub.register({kind: tokenU, param: url, task, tagger});
   };
@@ -84,6 +84,6 @@ let sendUrl = (url: string, msg: string): Cmd.t =>
       open Util;
       let ws = !!listener.payload;
       ws.send(. msg);
-      () => Listener.stop(listener, nothing);
+      {cancel: (.) => Listener.stop(listener, nothing)};
     });
   };

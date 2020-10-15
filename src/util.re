@@ -1,3 +1,8 @@
+[@unboxed]
+type result = {
+  cancel: (. unit) => unit
+}
+
 external any_cast: 'a => 'b = "%identity";
 
 module Dict = {

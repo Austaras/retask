@@ -1,13 +1,13 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import { noCmd, onEvent, useReducerT } from '..'
+import { noCmd, onDocument, useReducerT } from '..'
 
 test('could click', () => {
     const { result, unmount } = renderHook(() =>
         useReducerT({
             init: [0, noCmd],
             update: (state, _) => [state + 1, noCmd],
-            sub: _ => onEvent('click', _ => true)
+            sub: _ => onDocument('click', _ => true)
         })
     )
 

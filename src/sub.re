@@ -5,7 +5,7 @@ type send('payload) = (. 'payload) => unit;
 type instance('param, 'payload, 'msg) = {
   kind: string,
   param: 'param,
-  task: (send('payload), unit) => unit,
+  task: send('payload) => Util.result,
   tagger: 'payload => 'msg,
 };
 

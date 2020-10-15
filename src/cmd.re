@@ -2,7 +2,7 @@ type send('msg) = (. 'msg) => unit;
 
 type t = (. unit) => unit;
 
-type reg('msg) = ((send('msg), unit) => unit) => unit;
+type reg('msg) = (send('msg) => Util.result) => unit;
 let register: reg('msg) = _ => ();
 
 [@warning "-27"]
