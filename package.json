@@ -1,6 +1,6 @@
 {
     "name": "@wicke/retask",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Elm task but for ReScript",
     "homepage": "https://github.com/austaras/retask",
     "repository": "https://github.com/austaras/retask",

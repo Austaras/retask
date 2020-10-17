@@ -1,8 +1,9 @@
 ![npm](https://img.shields.io/npm/v/@wicke/retask?style=flat-square)
 ![Coveralls github](https://img.shields.io/coveralls/github/Austaras/retask?style=flat-square)
+
 ## Elm task but with ReScript and React
 
-It's \${currentYear} and there're sufficient reasons for not using Elm, yet there isn't a real alternative(except Elmish, but it has its own problem too). Up until the release of React hook, in which `useReducer` alone is powerful enough for mimicking TEA. However there is one big thing missing that is side effect handling.
+It's \${currentYear} and there're sufficient reasons for not using Elm, yet there isn't a real alternative(except Elmish, but it has its own problem too). Not until the release of React hook, in which `useReducer` alone is powerful enough for mimicking TEA. However there is one big thing missing: side effect.
 
 This package is intended to port said system to ReScript so you can write Elm without really having to write Elm, or more shortly, **Elm as a hook**. You could also use it in plain JavaScript or (in future) TypeScript (for now you also need `bs-platform` installed).
 
@@ -38,7 +39,7 @@ or in JavaScript
 
 ```js
 import React from 'react'
-import { useReducer, delay, noCmd, onDocument } from '@wicke/retask'
+import { useReducerT, delay, noCmd, onDocument } from '@wicke/retask'
 
 export function FooComp() {
     const [state, dispatch] = useReducerT({
@@ -55,11 +56,11 @@ You would see a `0` on screen and then a `1` one second later, and every time yo
 
 ### Intro to ReTask
 
-There are three elements in ReTask, they're `Cmd`, `Task` and `Sub`.
+There are three elements in ReTask: `Cmd`, `Task` and `Sub`.
 
-A `Cmd` is for one shot job like `setTimeout`. You may use `Cmd` to send message to your component or simply for performing side effects. If for the former purpose, its constructor will take a `tagger` function to map payload to your intended message. Don't worry if your jobs hasn't finished when your component is unmounting, they will be cancelled.
+A `Cmd` is for one shot job like `setTimeout`. You may use `Cmd` to send message to your component or simply for performing side effects. For the former its constructor will take a `tagger` to map payload to your intended message. Don't worry if your jobs hasn't finished when your component is unmounting, they will be cancelled.
 
-And what do you use when you want to compose two `Cmd`s? It doesn't make sense to provide each of them a tagger, so you should use `Task`. `Task` is like `Cmd` without tagger, you could make two tasks runing one by one through using `andThen`/`thenTask`, and make it send message to your component using `perform`/`performTask` or if the `Task` may fail, using `attempt`/`attemptTask`.
+And what do you use when you want to compose two `Cmd`s? It doesn't make sense to provide each of them a tagger, so you should use `Task`. `Task` is like `Cmd` without tagger. Using `andThen`/`thenTask` you could make two tasks runing one by one. And then by `attempt`/`attemptTask` you could turn it into a `Cmd`. If the `Task` won't fail, `perform`/`performTask` is more simple.
 
 `Sub`, on the other hand, is for long running job like `setInterval`. Every time it see fit, a `Sub` would send message to your component. And if such message cause a state change, your `sub` function will be recalled with updated state and calcuate a new `Sub`. If it's of different type or be constructed with different parameter, your old `Sub` will be cancelled.
 
