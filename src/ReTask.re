@@ -19,7 +19,7 @@ type subState('msg) = {
 
 type cancel('msg) = {
   [@bs.as "0"]
-  cmdQueue: Js.Dict.t(Util.result),
+  cmdQueue: Js.Dict.t(Util.ret),
   [@bs.as "1"]
   subQueue: array(subState('msg)),
   [@bs.as "2"]

@@ -5,9 +5,5 @@ node_modules
 .vscode
 .merlin
 .bsb.lock
-*.bs.js
 
 coverage
-
-dist/*
-!dist/index.js

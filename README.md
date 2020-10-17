@@ -9,8 +9,7 @@ The intention of this package is to port said system to rescript so you can writ
 
 Effect Manager:
 
-- [ ] Task composition
-- [ ] Promise
+- [x] Task composition
 - [x] Time
 - [ ] Ajax
 - [x] WebSocket

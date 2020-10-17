@@ -12,14 +12,14 @@ let delay = (delay: int, tagger: unit => 'msg): Cmd.t =>
 
 let%private unit = ();
 
-let sleep = (time: int): Task.t(unit) =>
+let sleep = (time: int): Task.t(unit, unit) =>
   (. cb) => {
-    let id = setTimeout(() => cb(. unit), time);
+    let id = setTimeout(() => cb(. Ok(unit)), time);
     {cancel: (.) => clearTimeout(id)};
   };
 
 [@bs.val] external delayFloat: (float, unit => 'msg) => Cmd.t = "delay";
-[@bs.val] external sleepFloat: float => Task.t(unit) = "sleep";
+[@bs.val] external sleepFloat: float => Task.t(unit, unit) = "sleep";
 
 let nextFrame = (tagger): Cmd.t =>
   (.) => {

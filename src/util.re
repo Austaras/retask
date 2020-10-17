@@ -1,5 +1,5 @@
 [@unboxed]
-type result = {
+type ret = {
   cancel: (. unit) => unit
 }
 
