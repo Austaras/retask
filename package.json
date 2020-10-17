@@ -1,7 +1,7 @@
 {
     "name": "@wicke/retask",
-    "version": "0.4.0",
-    "description": "elm task but for rescript",
+    "version": "0.4.1",
+    "description": "Elm task but for ReScript",
     "homepage": "https://github.com/austaras/retask",
     "repository": "https://github.com/austaras/retask",
     "keywords": [
@@ -24,6 +24,7 @@
     ],
     "main": "index.js",
     "exports": {
+        "./": "./",
         "./lib.": "./lib/es6/src/"
     },
     "types": "index.d.ts",
