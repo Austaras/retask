@@ -1,5 +1,5 @@
-![npm](https://img.shields.io/npm/v/@wicke/retask?style=flat-square)
-![Coveralls github](https://img.shields.io/coveralls/github/Austaras/retask?style=flat-square)
+[![npm](https://img.shields.io/npm/v/@wicke/retask?style=flat-square)](https://www.npmjs.com/package/@wicke/retask)
+[![Coveralls](https://img.shields.io/coveralls/github/Austaras/retask?style=flat-square)](https://coveralls.io/github/Austaras/retask)
 
 ## Elm task but with ReScript and React
 
@@ -62,7 +62,7 @@ A `Cmd` is for one shot job like `setTimeout`. You may use `Cmd` to send message
 
 And what do you use when you want to compose two `Cmd`s? It doesn't make sense to provide each of them a tagger, so you should use `Task`. `Task` is like `Cmd` without tagger. Using `andThen`/`thenTask` you could make two tasks runing one by one. And then by `attempt`/`attemptTask` you could turn it into a `Cmd`. If the `Task` won't fail, `perform`/`performTask` is more simple.
 
-`Sub`, on the other hand, is for long running job like `setInterval`. Every time it see fit, a `Sub` would send message to your component. And if such message cause a state change, your `sub` function will be recalled with updated state and calcuate a new `Sub`. If it's of different type or be constructed with different parameter, your old `Sub` will be cancelled.
+`Sub`, on the other hand, is for long running job like `setInterval`. Every time it see fit, a `Sub` would send message to your component. And if such message cause a state change, your `sub` function will be recalled with updated state and calcuate a new `Sub`. If it's of different type or be constructed with different parameter, your old `Sub` will be cancelled. Beware that although ReScript is not a pure language unlike Elm, here parameter changes are still detected with `===`
 
 ### How to write your own effect manager
 

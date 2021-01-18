@@ -24,19 +24,20 @@ let batch = (subs: array<t>): t => (. ()) => subs |> Js.Array.forEach(f => f(.))
 @inline
 let getToken = str => (str |> Js.String.split("."))->Js.Array.unsafe_get(0)
 
-let sameSub = %raw(`function sameSub(kind, param, oldKind, oldParam) {
-    if (kind !== oldKind) return false
-    if (Array.isArray(param) && Array.isArray(oldParam)) {
-        if (param.length !== oldParam.length) return false
-        for (var i = 0; i < param.length; i++) {
-            if (param[i] !== oldParam[i]) return false
-        }
-        return true
+let diff_array = %raw(`function (arr, oldArr) {
+    if (arr.length !== oldArr.length) return false
+    for (let i = 0;i< arr.length; i++) {
+        if (arr[i] !== oldArr[i]) return false
     }
-    if (!Array.isArray(param) && !Array.isArray(oldParam)) {
-        return param === oldParam
-    }
-    return false
-}`)
+    return true
+}
+`)
 
-let sameSub: (string, 'param, string, 'param) => bool = sameSub
+let sameSub = (kind: string, param: 'param, oldKind: string, oldParam: 'param): bool => {
+  switch (kind === oldKind, Js.Array.isArray(param), Js.Array.isArray(oldParam)) {
+  | (false, _, _) => false
+  | (true, true, true) => diff_array(param, oldParam)
+  | (true, false, false) => param === oldParam
+  | (true, _, _) => false
+  }
+}
