@@ -1,19 +1,19 @@
-open Webapi.Dom;
+open Webapi.Dom
 
 module MessageEvent = {
   type t = {
     data: string,
     origin: string,
     lastEventId: string,
-  };
+  }
 
   include Event.Impl({
-    type nonrec t = t;
-  });
-};
+    type t = t
+  })
+}
 
 module CloseEvent = {
-  type code =
+  type rec code =
     | NormalClosure
     | GoingAway
     | ProtocolError
@@ -35,14 +35,14 @@ module CloseEvent = {
     code: int,
     reason: string,
     wasClean: bool,
-  };
+  }
 
   include Event.Impl({
-    type nonrec t = t;
-  });
+    type t = t
+  })
 
   let code = ev =>
-    switch (ev.code) {
+    switch ev.code {
     | 1000 => NormalClosure
     | 1001 => GoingAway
     | 1002 => ProtocolError
@@ -60,21 +60,21 @@ module CloseEvent = {
     | 1014 => BadGateway
     | 1015 => TLSHandshake
     | n => CustomCode(n, ev)
-    };
-};
+    }
+}
 
-exception UnknownReadyState(int);
+exception UnknownReadyState(int)
 
 type readyState =
   | Connecting
   | Open
   | Closing
-  | Closed;
+  | Closed
 
-type protocols = array(string);
+type protocols = array<string>
 
 type t = {
-  mutable binaryType: [ | `Blob | `ArrayBuffer],
+  mutable binaryType: [#Blob | #ArrayBuffer],
   mutable onopen: MessageEvent.t => unit,
   mutable onerror: MessageEvent.t => unit,
   mutable onclose: CloseEvent.t => unit,
@@ -82,36 +82,32 @@ type t = {
   bufferedAmount: int,
   url: string,
   protocol: string,
-  readyState,
+  readyState: readyState,
   extensions: string,
   close: (. unit) => unit,
   send: (. string) => unit,
-};
+}
 
-[@bs.new] external make: string => t = "WebSocket";
+@bs.new external make: string => t = "WebSocket"
 
-[@bs.new] external withProtocol: (string, protocols) => t = "WebSocket";
-[@bs.send]
-external addEventListener:
-  (
-    t,
-    [@bs.string] [
-      | [@bs.as "open"] `open_(MessageEvent.t => unit)
-      | `close(CloseEvent.t => unit)
-      | `message(MessageEvent.t => unit)
-    ]
-  ) =>
-  unit =
-  "addEventListener";
-[@bs.send]
-external removeEventListener:
-  (
-    t,
-    [@bs.string] [
-      | [@bs.as "open"] `open_(MessageEvent.t => unit)
-      | `close(CloseEvent.t => unit)
-      | `message(MessageEvent.t => unit)
-    ]
-  ) =>
-  unit =
-  "removeEventListener";
+@bs.new external withProtocol: (string, protocols) => t = "WebSocket"
+@bs.send
+external addEventListener: (
+  t,
+  @bs.string
+  [
+    | @bs.as("open") #open_(MessageEvent.t => unit)
+    | #close(CloseEvent.t => unit)
+    | #message(MessageEvent.t => unit)
+  ],
+) => unit = "addEventListener"
+@bs.send
+external removeEventListener: (
+  t,
+  @bs.string
+  [
+    | @bs.as("open") #open_(MessageEvent.t => unit)
+    | #close(CloseEvent.t => unit)
+    | #message(MessageEvent.t => unit)
+  ],
+) => unit = "removeEventListener"
