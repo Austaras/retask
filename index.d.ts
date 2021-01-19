@@ -35,6 +35,7 @@ export function delay<T>(time: number, tagger: () => T): Cmd<T>
 export function sleep(time: number): Task<void, void>
 export function everyTime(time: number, tagger: () => T): Sub<T>
 
+export function onUniqueTarget<T>(element: EventTarget, event: string, tagger: (ev: Event) => T): Sub<T>
 export function onDocument<T, K extends keyof DocumentEventMap>(
     event: K,
     tagger: (ev: DocumentEventMap[K]) => T

@@ -20,11 +20,10 @@ let none: t = (. ()) => ()
 
 let batch = (subs: array<t>): t => (. ()) => subs |> Js.Array.forEach(f => f(.))
 
-// https://github.com/rescript-lang/rescript-compiler/issues/4607
-@inline
 let getToken = str => (str |> Js.String.split("."))->Js.Array.unsafe_get(0)
 
-let diff_array = %raw(`function (arr, oldArr) {
+%%private(
+  let diff_array = %raw(`function (arr, oldArr) {
     if (arr.length !== oldArr.length) return false
     for (let i = 0;i< arr.length; i++) {
         if (arr[i] !== oldArr[i]) return false
@@ -32,6 +31,7 @@ let diff_array = %raw(`function (arr, oldArr) {
     return true
 }
 `)
+)
 
 let sameSub = (kind: string, param: 'param, oldKind: string, oldParam: 'param): bool => {
   switch (kind === oldKind, Js.Array.isArray(param), Js.Array.isArray(oldParam)) {

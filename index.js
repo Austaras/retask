@@ -11,7 +11,7 @@ export {
 export { none as noSub, batch as batchSub } from './lib/es6/src/sub'
 
 export { every as everyTime, delay, sleep } from './lib/es6/src/time'
-export { onDocument, onWindow } from './lib/es6/src/domEvent'
+export { onDocument, onWindow, onUniqueTarget } from './lib/es6/src/domEvent'
 export {
     on as onWs,
     onUrl as onWsUrl,

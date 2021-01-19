@@ -17,9 +17,9 @@ module JsArray = {
 module Map = {
   type t<'key, 'value>
   @bs.new external make: unit => t<'key, 'value> = "Map"
-  @bs.send external get: (t<'key, 'value>, 'key) => option<'value> = "Map"
-  @bs.send external unsafeGet: (t<'key, 'value>, 'key) => 'value = "Map"
-  @bs.send external set: (t<'key, 'value>, 'key, 'value) => unit = "Map"
+  @bs.send external get: (t<'key, 'value>, 'key) => option<'value> = "get"
+  @bs.send external unsafeGet: (t<'key, 'value>, 'key) => 'value = "get"
+  @bs.send external set: (t<'key, 'value>, 'key, 'value) => unit = "set"
 }
 
 external \"!!": option<'a> => 'a = "%identity"
