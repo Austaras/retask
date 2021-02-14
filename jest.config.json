@@ -1,9 +1,10 @@
 {
     "testMatch": ["<rootDir>/test/**/*.ts"],
     "transform": {
-        "^.+\\.[t|j]sx?$": "babel-jest"
+        "^.+\\.m?[t|j]sx?$": "babel-jest"
     },
     "coverageReporters": ["lcov", "text"],
     "collectCoverageFrom": ["lib/es6/src/*.js"],
-    "transformIgnorePatterns": ["node_modules/(?!(bs-platform)/)"]
+    "transformIgnorePatterns": ["node_modules/(?!(@rescript\/std)/)"],
+    "moduleFileExtensions": ["js", "jsx", "ts", "mjs"]
 }

@@ -2,6 +2,7 @@
     "name": "retask",
     "version": "0.1.0",
     "namespace": "re-task",
+    "external-stdlib" : "@rescript/std",
     "sources": {
         "dir": "src",
         "subdirs": true
