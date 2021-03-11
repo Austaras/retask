@@ -5,7 +5,7 @@
 
 It's \${currentYear} and there're sufficient reasons for not using Elm, yet there isn't a real alternative(except Elmish, but it has its own problem too). Not until the release of React hook, in which `useReducer` alone is powerful enough for mimicking TEA. However there is one big thing missing: side effect.
 
-This package is intended to port said system to ReScript so you can write Elm without really having to write Elm, or more shortly, **Elm as a hook**. You could also use it in plain JavaScript or (in future) TypeScript (for now you also need `bs-platform` installed).
+This package is intended to port said system to ReScript so you can write Elm without really having to write Elm, or more shortly, **Elm as a hook**. You could also use it in plain JavaScript or TypeScript.
 
 Effect Manager:
 
