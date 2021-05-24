@@ -38,17 +38,17 @@ let make = () => {
 or in JavaScript
 
 ```js
-import React from 'react'
-import { useReducerT, delay, noCmd, onDocument } from '@wicke/retask'
+ React from 'react'
+ { useReducerT, delay, noCmd, onDocument } from '@wicke/retask'
 
-export function FooComp() {
-    const [state, dispatch] = useReducerT({
+  FooComp() {
+     [state, dispatch] = useReducerT({
         init: [0, delay(1000, () => 1)]
         update: (state, action) => [state + action, noCmd],
         sub: state => onDocument('click', ev => state)
     })
 
-    return <div>{state}</div>
+    <div>{state}</div>
 }
 ```
 
@@ -71,21 +71,21 @@ Currently there are some effect managers missing and things will occur that mayb
 A `Task` is merely a function who takes a callback as an argument and return a function for cancelling ongoing task.
 
 ```js
-function voidTask(cb) {
+voidTask(cb) {
     cb()
-    return () => {}
+     () => {}
 }
 ```
 
 And a `Cmd` is not far from it. In the function body, you call `register` so your task will be registered to your component. The returned value is for cancellation.
 
 ```js
-import { register } from '@wicke/retask/lib/src/es6/cmd'
+ { register } from '@wicke/retask/lib/src/es6/cmd'
 
-function voidCmd(tagger) {
+ voidCmd(tagger) {
     register(send => {
         send(tagger(payload))
-        return () => {}
+         () => {}
     })
 }
 ```
