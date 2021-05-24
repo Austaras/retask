@@ -1,6 +1,6 @@
 {
     "name": "retask",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "namespace": "re-task",
     "external-stdlib" : "@rescript/std",
     "sources": {
@@ -14,8 +14,8 @@
     "suffix": ".js",
     "bs-dependencies": ["bs-webapi", "reason-react"],
     "warnings": {
-        "error": "+101",
-        "number": "-45"
+        "error": "+121",
+        "number": "-65"
     },
-    "refmt": 3
+    "refmt": 5
 }
