@@ -29,9 +29,9 @@
     },
     "types": "index.d.ts",
     "scripts": {
-        "build": "bsb -make-world",
-        "clean": "bsb -clean-world",
-        "watch": "bsb -make-world -w",
+        "build": "rescript build",
+        "clean": "rescript clean",
+        "watch": "rescript build -w",
         "test": "jest"
     },
     "dependencies": {
@@ -47,10 +47,10 @@
         "@types/jest": "^26.0.14",
         "@types/react": "^17.0.0",
         "babel-jest": "^26.5.2",
-        "bs-platform": "^9.0.0",
         "jest": "^26.4.2",
         "react": "^17.0.1",
         "react-test-renderer": "^17.0.1",
+        "rescript": "^9.1.1",
         "ts-jest": "^26.5.1",
         "typescript": "^4.0.3"
     },
