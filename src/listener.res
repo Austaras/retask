@@ -1,11 +1,11 @@
 type t<'msg, 'payload> = {
-  @bs.as("0")
+  @as("0")
   cb: array<(. 'msg) => unit>,
-  @bs.as("1")
+  @as("1")
   mutable payload: option<'payload>,
-  @bs.as("2")
+  @as("2")
   ctor: (. unit) => 'payload,
-  @bs.as("3")
+  @as("3")
   dtor: (. 'payload) => unit,
 }
 
@@ -24,7 +24,7 @@ let stop = (inst: t<'msg, 'payload>, cb: (. 'msg) => unit) => {
     let _ = Js.Array.removeCountInPlace(~pos=id, ~count=1, inst.cb)
   }
   switch inst.payload {
-  | Some(payload) when Array.length(inst.cb) === 0 =>
+  | Some(payload) if Array.length(inst.cb) === 0 =>
     inst.dtor(. payload)
     inst.payload = None
   | _ => ()

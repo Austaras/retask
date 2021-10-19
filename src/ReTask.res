@@ -7,22 +7,22 @@ type config<'model, 'msg> = {
 }
 
 type subState<'msg> = {
-  @bs.as("0")
+  @as("0")
   kind: string,
-  @bs.as("1")
+  @as("1")
   cancel: (. unit) => unit,
-  @bs.as("2")
+  @as("2")
   mutable tagger: unit => 'msg,
-  @bs.as("3")
+  @as("3")
   param: unit,
 }
 
 type cancel<'msg> = {
-  @bs.as("0")
+  @as("0")
   cmdQueue: Js.Dict.t<Util.ret>,
-  @bs.as("1")
+  @as("1")
   subQueue: array<subState<'msg>>,
-  @bs.as("2")
+  @as("2")
   mutable id: int,
 }
 
@@ -66,8 +66,7 @@ let useReducerT = (config: config<'model, 'msg>) => {
       }
       let old = Belt.Array.get(queue, id)
       switch old {
-      | Some(old) when sameSub(inst.kind, inst.param, old.kind, old.param) =>
-        old.tagger = inst.tagger
+      | Some(old) if sameSub(inst.kind, inst.param, old.kind, old.param) => old.tagger = inst.tagger
       | Some(old) =>
         old.cancel(.)
         let {kind, param, tagger, task} = inst
@@ -96,9 +95,11 @@ let useReducerT = (config: config<'model, 'msg>) => {
         open Util
         Js.Array.forEach(f => f.cancel(.))
       }
+
       cancel.current.subQueue |> Js.Array.forEach(f => f.cancel(.))
     },
   ))
+
   (state, dispatch)
 }
 

@@ -48,7 +48,8 @@ let onDocument = (event: string, tagger: Event.t => 'msg) =>
   onUniqueTarget(event, tagger, document |> Document.asEventTarget, "document")
 let onWindow = (event: string, tagger: Event.t => 'msg) =>
   onUniqueTarget(event, tagger, window |> Window.asEventTarget, "window")
-let onElement = (event, tagger, query: string) => switch document |> Document.querySelector(query) {
-| Some(ele) => onUniqueTarget(event, tagger, ele |> Element.asEventTarget, query)
-| None => raise(Not_found)
-}
+let onElement = (event, tagger, query: string) =>
+  switch document |> Document.querySelector(query) {
+  | Some(ele) => onUniqueTarget(event, tagger, ele |> Element.asEventTarget, query)
+  | None => raise(Not_found)
+  }

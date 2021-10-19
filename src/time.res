@@ -17,8 +17,8 @@ let sleep = (time: int): Task.t<unit, unit> =>
     {cancel: (. ()) => clearTimeout(id)}
   }
 
-@bs.val external delayFloat: (float, unit => 'msg) => Cmd.t = "delay"
-@bs.val external sleepFloat: float => Task.t<unit, unit> = "sleep"
+@val external delayFloat: (float, unit => 'msg) => Cmd.t = "delay"
+@val external sleepFloat: float => Task.t<unit, unit> = "sleep"
 
 let nextFrame = (tagger): Cmd.t =>
   (. ()) =>
@@ -38,4 +38,4 @@ let every = (interval: int, tagger: unit => 'msg): Sub.t =>
     Sub.register({kind: token, param: interval, task: task, tagger: tagger})
   }
 
-@bs.val external everyFloat: (float, unit => 'msg) => Sub.t = "every"
+@val external everyFloat: (float, unit => 'msg) => Sub.t = "every"

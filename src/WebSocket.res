@@ -88,25 +88,25 @@ type t = {
   send: (. string) => unit,
 }
 
-@bs.new external make: string => t = "WebSocket"
+@new external make: string => t = "WebSocket"
 
-@bs.new external withProtocol: (string, protocols) => t = "WebSocket"
-@bs.send
+@new external withProtocol: (string, protocols) => t = "WebSocket"
+@send
 external addEventListener: (
   t,
-  @bs.string
+  @string
   [
-    | @bs.as("open") #open_(MessageEvent.t => unit)
+    | @as("open") #open_(MessageEvent.t => unit)
     | #close(CloseEvent.t => unit)
     | #message(MessageEvent.t => unit)
   ],
 ) => unit = "addEventListener"
-@bs.send
+@send
 external removeEventListener: (
   t,
-  @bs.string
+  @string
   [
-    | @bs.as("open") #open_(MessageEvent.t => unit)
+    | @as("open") #open_(MessageEvent.t => unit)
     | #close(CloseEvent.t => unit)
     | #message(MessageEvent.t => unit)
   ],
